@@ -1,0 +1,7 @@
+<?php
+$lang['Paystack.name'] = 'Paystack Standard';
+
+$lang['Paystack.secret_key'] = 'Paystack Secret Key';
+$lang['Paystack.tooltip.secret_key'] = 'In order to use test mode, simply enter a test key';
+
+$lang['Paystack.buildprocess.submit'] = 'Pay with Paystack';
