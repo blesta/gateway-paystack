@@ -215,28 +215,24 @@ class Paystack extends NonmerchantGateway
     {
         // Load the Paystack API
         $api = $this->getApi($this->meta['secret_key']);
+        $callback_data = json_decode(@file_get_contents("php://input"));
 
         // Log request received
         $this->log(
             $this->ifSet($_SERVER['REQUEST_URI']),
             json_encode(
-                $this->utf8EncodeArray(['reference' => $get['reference'], 'get' => $get, 'post' => $post]),
+                $callback_data,
                 JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
             ),
             'output',
             true
         );
 
-        $result = $api->checkPayment($this->ifSet($get['reference']));
+        $result = $api->checkPayment($this->ifSet($callback_data->data->reference));
         $data = $result->data();
 
         // Log post-back sent
-        $this->log(
-            'validate',
-            json_encode($this->utf8EncodeArray((array)$data), JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
-            'input',
-            true
-        );
+        $this->log('validate', json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), 'input', true);
 
         return [
             'client_id' => $this->ifSet($data->metadata->client_id),
@@ -341,21 +337,5 @@ class Paystack extends NonmerchantGateway
         Loader::load(dirname(__FILE__) . DS . 'lib' . DS . 'paystack_api.php');
 
         return new PaystackApi($secret_key);
-    }
-
-    /**
-     *  Recursively convert all array values to a utf8-encoded string
-     *
-     * @param array $data The data to be encoded
-     * @return array The encoded data
-     */
-    private function utf8EncodeArray(array $data) {
-        foreach ($data as &$value) {
-            if ($value !== null) {
-                $value = (is_scalar($value) ? utf8_encode($value) : $this->utf8EncodeArray((array)$value));
-            }
-        }
-
-        return $data;
     }
 }
