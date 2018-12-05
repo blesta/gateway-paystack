@@ -26,9 +26,6 @@ class PaystackResponse
         }
 
         $this->status = isset($apiResponse->status) ? $apiResponse->status : false;
-        if ($this->status && isset($this->data->status)) {
-            $this->status = $this->data->status;
-        }
     }
 
     /**
