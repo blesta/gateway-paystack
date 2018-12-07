@@ -73,9 +73,9 @@ class PaystackApi
 
         // Execute request
         curl_setopt($ch, CURLOPT_URL, $url . trim($method, '/'));
-        $data = [];
+        $data = new stdClass();
         if (curl_errno($ch)) {
-            $data = (object)['message' => curl_error($ch)];
+            $data->message = curl_error($ch);
         } else {
             $data = json_decode(curl_exec($ch));
         }
