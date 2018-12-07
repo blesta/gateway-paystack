@@ -1,6 +1,4 @@
 <?php
-require __dir__ . DS . 'vendor' . DS . 'autoload.php';
-
 /**
  * Paystack Gateway.
  *
@@ -228,11 +226,19 @@ class Paystack extends NonmerchantGateway
             true
         );
 
+        // Log data sent for validation
+        $this->log(
+            'validate',
+            json_encode(['reference' => $callback_data->data->reference], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT),
+            'output',
+            true
+        );
+
         $result = $api->checkPayment($this->ifSet($callback_data->data->reference));
         $data = $result->data();
 
         // Log post-back sent
-        $this->log('validate', json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), 'input', true);
+        $this->log('validate', json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), 'output', true);
 
         return [
             'client_id' => $this->ifSet($data->metadata->client_id),
