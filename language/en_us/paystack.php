@@ -4,7 +4,7 @@ $lang['Paystack.!error.secret_key.valid'] = 'The secret key must be at least 40 
 
 
 $lang['Paystack.name'] = 'Paystack Standard';
-$lang['Paystack.description'] = 'Paystack';
+$lang['Paystack.description'] = 'Paystack is the fastest, simplest way to start accepting online payments in Nigeria. From signup to receiving real payments can take under 15 minutes. Seriously';
 
 $lang['Paystack.secret_key'] = 'Paystack Secret Key';
 $lang['Paystack.tooltip.secret_key'] = 'In order to use test mode, simply enter a test key.';
