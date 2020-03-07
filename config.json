@@ -1,7 +1,7 @@
 {
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"name": "Paystack.name",
-	"description": "Paystack",
+	"description": "Paystack.description",
 	"authors": [
 		{
 			"name": "Phillips Data, Inc.",
