@@ -217,7 +217,7 @@ class Paystack extends NonmerchantGateway
 
         // Log request received
         $this->log(
-            $this->ifSet($_SERVER['REQUEST_URI']),
+            (isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : null),
             json_encode(
                 $callback_data,
                 JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
@@ -234,22 +234,22 @@ class Paystack extends NonmerchantGateway
             true
         );
 
-        $result = $api->checkPayment($this->ifSet($callback_data->data->reference));
+        $result = $api->checkPayment((isset($callback_data->data->reference) ? $callback_data->data->reference : null));
         $data = $result->data();
 
         // Log post-back sent
         $this->log('validate', json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT), 'output', true);
 
         return [
-            'client_id' => $this->ifSet($data->metadata->client_id),
-            'amount' => $this->ifSet($data->amount, 0) / 100,
-            'currency' => $this->ifSet($data->currency),
+            'client_id' => (isset($data->metadata->client_id) ? $data->metadata->client_id : null),
+            'amount' => (isset($data->amount) ? $data->amount : 0) / 100,
+            'currency' => (isset($data->currency) ? $data->currency : null),
             'status' => !$result->status()
                 ? 'error'
-                : ($this->ifSet($data->status, 'error') == 'success' ? 'approved' : 'declined'),
-            'reference_id' => $this->ifSet($data->reference),
-            'transaction_id' => $this->ifSet($data->id),
-            'invoices' => $this->unserializeInvoices($this->ifSet($data->metadata->invoices))
+                : ((isset($data->status) ? $data->status : 'error') == 'success' ? 'approved' : 'declined'),
+            'reference_id' => (isset($data->reference) ? $data->reference : null),
+            'transaction_id' => (isset($data->id) ? $data->id : null),
+            'invoices' => $this->unserializeInvoices((isset($data->metadata->invoices) ? $data->metadata->invoices : null))
         ];
     }
 
@@ -276,16 +276,16 @@ class Paystack extends NonmerchantGateway
         $api = $this->getApi($this->meta['secret_key']);
 
         // Get transaction data
-        $result = $api->checkPayment($this->ifSet($get['reference']));
+        $result = $api->checkPayment((isset($get['reference']) ? $get['reference'] : null));
         $data = $result->data();
 
         return [
-            'client_id' => $this->ifSet($data->metadata->client_id),
-            'amount' => $this->ifSet($data->amount, 0) / 100,
-            'currency' => $this->ifSet($data->currency),
+            'client_id' => (isset($data->metadata->client_id) ? $data->metadata->client_id : null),
+            'amount' => (isset($data->amount) ? $data->amount : 0) / 100,
+            'currency' => (isset($data->currency) ? $data->currency : null),
             'status' => 'approved', // we wouldn't be here if it weren't, right?
-            'transaction_id' => $this->ifSet($data->id),
-            'invoices' => $this->unserializeInvoices($this->ifSet($data->metadata->invoices))
+            'transaction_id' => (isset($data->id) ? $data->id : null),
+            'invoices' => $this->unserializeInvoices((isset($data->metadata->invoices) ? $data->metadata->invoices : null))
         ];
     }
 
