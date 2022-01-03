@@ -8,6 +8,6 @@
 			"url": "http://www.blesta.com"
 		}
 	],
-	"currencies": ["NGN", "GHS", "ZAR"],
+	"currencies": ["NGN", "USD", "GHS", "ZAR"],
 	"signup_url": "https://dashboard.paystack.com/#/signup"
 }
